@@ -1,19 +1,17 @@
 name: Claude Code Review
 
-permissions:
-  contents: read
-  pull-requests: write
-
 on:
   pull_request:
-    types: 
-      - opened
-      - reopened
-      - synchronize
+    types: [opened, edited]
+  pull_request_review_comment:
+    types: [created, edited]
+  issue_comment:
+    types: [created, edited]
     
 jobs:
-  release:
-    name: Release
+  process-pull-request:
+    permissions: write-all
+    name: Process Pull Request
     runs-on: ubuntu-latest
     
     steps:
