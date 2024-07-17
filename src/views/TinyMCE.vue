@@ -1,10 +1,12 @@
 <template>
   <div class="container">
     <div class="tiny-editor">
+      <!-- TinyMCE Editor component -->
       <editor api-key="22a5hpysl6pcfcctei3v4pxthc607lx40ucaa2rbrltzbkld" :init="config" />
     </div>
   </div>
   <Teleport to="body">
+    <!-- Modal component for file URL input -->
     <modal :show="showModal" @close="showModal = false">
       <template #header>
         <h3>Paste file url</h3>
@@ -25,9 +27,11 @@ import Editor from '@tinymce/tinymce-vue';
 import Modal from '../components/Modal.vue'
 import { ref } from 'vue'
 
+// Reactive variables
 const showModal = ref(false)
 const fileUrl = ref('')
 
+// TinyMCE configuration
 const config = {
   plugins: 'customToolbarButton link file',
   toolbar: 'customToolbarButton',
@@ -37,14 +41,15 @@ const config = {
   }
 }
 
+// Handle file upload
 const handleUpload = () => {
-  console.log(fileUrl.value)
   const editor = window.tinymce.activeEditor;
   const tag = `<a href="${fileUrl.value}" target="_blank" class="file-button">Download File</a>`
   editor.insertContent(tag);
   showModal.value = false
 }
 
+// Custom toolbar button setup
 const customToolbarButton = (editor) => {
   editor.ui.registry.addButton('customToolbarButton', {
     text: 'Attach file',
