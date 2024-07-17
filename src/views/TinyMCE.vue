@@ -3,7 +3,8 @@
     <div class="tiny-editor">
       <Editor
         api-key="22a5hpysl6pcfcctei3v4pxthc607lx40ucaa2rbrltzbkld"
-        :init="config"
+        :init="editorConfig"
+        v-model="editorContent"
       />
     </div>
   </div>
@@ -13,27 +14,28 @@
         <h3>Paste file URL</h3>
       </template>
       <template #body>
-        <input type="text" v-model="fileUrl" />
+        <input type="text" v-model="fileUrl" placeholder="Enter file URL" />
       </template>
       <template #footer>
         <button @click="closeModal">Cancel</button>
-        <button @click="handleUpload">Upload</button>
+        <button @click="handleUpload" :disabled="!fileUrl">Upload</button>
       </template>
     </Modal>
   </Teleport>
 </template>
 
 <script setup lang="ts">
+import { ref, reactive } from 'vue'
 import Editor from '@tinymce/tinymce-vue'
 import Modal from '../components/Modal.vue'
-import { ref } from 'vue'
 
 const showModal = ref(false)
 const fileUrl = ref('')
+const editorContent = ref('')
 
-const config = {
+const editorConfig = reactive({
   plugins: 'link file',
-  toolbar: 'customToolbarButton',
+  toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link | customToolbarButton',
   setup: (editor: any) => {
     editor.ui.registry.addButton('customToolbarButton', {
       text: 'Attach file',
@@ -43,7 +45,7 @@ const config = {
       }
     })
   }
-}
+})
 
 const handleUpload = () => {
   const editor = window.tinymce.activeEditor
@@ -61,14 +63,14 @@ const closeModal = () => {
 </script>
 
 <style scoped>
-.tiny-editor {
-  min-width: 80vw;
-}
 .container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.tiny-editor {
+  min-width: 100%;
 }
 </style>
