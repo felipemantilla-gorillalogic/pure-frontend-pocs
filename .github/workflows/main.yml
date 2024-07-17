@@ -6,11 +6,7 @@ permissions:
 
 on:
   pull_request:
-    types: [opened, edited]
-  pull_request_review_comment:
-    types: [created, edited]
-  issue_comment:
-    types: [created, edited]
+    types: [opened, reopened]
     
 jobs:
   process-pull-request:
